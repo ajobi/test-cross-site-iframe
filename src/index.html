@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Test Cross Site Iframe</title>
+</head>
+<body>
+<script>
+  window.addEventListener('message', function ({ data }) {
+    const { method, key, value, requestChannel } = data
+
+    if (method === 'get') {
+      getItem(key, requestChannel)
+    } else if (method === 'set') {
+      setItem(key, value)
+    }
+  })
+
+  function getItem (key, responseChannel) {
+    window.parent.postMessage({ responseChannel, value: localStorage.getItem(key) }, '*');
+  }
+
+  function setItem (key, value) {
+    localStorage.setItem(key, value)
+  }
+</script>
+</body>
+</html>
